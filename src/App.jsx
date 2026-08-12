@@ -4,6 +4,8 @@ import BookDetails from "./components/books/BookDetails";
 import SearchResult from "./components/search/SearchResult";
 import Subjects from "./pages/Subjects";
 import SubjectDetails from "./pages/SubjectDetails";
+import Trending from "./pages/TrendingBooks";
+import ExploreHeader from "./components/explore/ExploreHeader";
 
 export const router = createBrowserRouter([
   {
@@ -29,13 +31,18 @@ export const router = createBrowserRouter([
     element: <SubjectDetails />
    },
   { 
-    path: "/trending"
+    path: "/trending",
+    element: <Trending />
    },
   { 
     path: "/new-releases"
    },
   { 
     path: "/categories"
+   },
+  { 
+    path: "/explore",
+    element: <ExploreHeader />
    },
   { 
     path: "/favorites"

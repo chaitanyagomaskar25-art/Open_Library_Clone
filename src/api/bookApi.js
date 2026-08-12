@@ -33,3 +33,9 @@ export const getSearchBooks = async (query, page = 1, language = "eng") => {
   );
   return res.data;
 };
+
+
+export const getTrendingBooks = async () => {
+  const res = await api.get("/trending/daily.json");
+  return res.data;
+};

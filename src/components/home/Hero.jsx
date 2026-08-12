@@ -43,7 +43,8 @@ const Hero = () => {
             {/* Interactive Dropdown Menu */}
             <div className="absolute left-0 top-full hidden group-hover:block bg-white border border-[#d2ceb8] rounded shadow-lg py-2 w-40 z-50">
               <Link to="/subjects" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Subjects</Link>
-              <Link to="#" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Trending</Link>
+              <Link to="/trending" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Trending</Link>
+              <Link to="/explore" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Explore</Link>
               <Link to="#" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Random Book</Link>
             </div>
           </div>
