@@ -1,34 +1,48 @@
 import { createBrowserRouter } from "react-router";
 import Home from "./pages/Home";
+import BookDetails from "./components/books/BookDetails";
+import SearchResult from "./components/search/SearchResult";
+import Subjects from "./pages/Subjects";
+import SubjectDetails from "./pages/SubjectDetails";
+import Trending from "./pages/TrendingBooks";
+import ExploreHeader from "./components/explore/ExploreHeader";
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />
   },
-  {
-    path:'/about'
-  },
   { 
-    path: "/search"
+    path: "/search",
+    element: <SearchResult />
    },
   { 
-    path: "/books/:bookId"
+    path: "/book/:bookId",
+    element: <BookDetails />
    },
   { 
     path: "/authors/:authorId"
    },
-  { 
-    path: "/subjects/:subject"
+   {path:"/subjects",
+    element: <Subjects />
    },
   { 
-    path: "/trending"
+    path: "/subjects/:subject",
+    element: <SubjectDetails />
+   },
+  { 
+    path: "/trending",
+    element: <Trending />
    },
   { 
     path: "/new-releases"
    },
   { 
     path: "/categories"
+   },
+  { 
+    path: "/explore",
+    element: <ExploreHeader />
    },
   { 
     path: "/favorites"

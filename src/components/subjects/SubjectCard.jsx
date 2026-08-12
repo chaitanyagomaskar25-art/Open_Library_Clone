@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getCategoryBooks } from "../../api/bookApi";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
-import { IsPending } from "./IsPending";
+import { IsPending } from "../home/IsPending";
 import { Link } from "react-router";
 
-function Categories({ category }) {
+function SubjectCard({ category }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [page, setPage] = useState(1);
 
@@ -15,6 +15,7 @@ function Categories({ category }) {
     placeholderData: (previous) => previous
   });
   const books = data?.docs || [];
+  
 
   const visibleBooks = books.slice(currentIndex, currentIndex + 4);
 
@@ -28,7 +29,7 @@ function Categories({ category }) {
       <div className="flex items-center justify-between mb-3 sm:mb-5 lg:mb-7 border-b-2 border-[#b59775] pb-2 sm:pb-3 gap-2">
         <h2 className="text-sm sm:text-lg lg:text-2xl font-serif font-bold text-[#2e1c10] capitalize tracking-wide flex items-center gap-1.5 sm:gap-2.5">
           <span className="w-1.5 sm:w-2 h-4 sm:h-5 lg:h-7 bg-[#704328] rounded-sm shadow-xs" />
-          {category}
+          {category} {data?.numFound}
         </h2>
         <span className="text-[8px] sm:text-[10px] lg:text-xs font-sans font-semibold text-[#54341c] tracking-wider uppercase bg-[#ebdccb] px-1.5 sm:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-md border border-[#c2a78a] shadow-xs shrink-0">
           Shelf {page} • Books {currentIndex + 1}-{currentIndex + visibleBooks.length}
@@ -137,4 +138,4 @@ function Categories({ category }) {
   );
 }
 
-export default Categories;
+export default SubjectCard;
