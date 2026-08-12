@@ -35,7 +35,17 @@ export const getSearchBooks = async (query, page = 1, language = "eng") => {
 };
 
 
-export const getTrendingBooks = async () => {
-  const res = await api.get("/trending/daily.json");
+export const getTrendingBooks = async (
+  period = "daily",
+  page = 1,
+  limit = 20,
+) => {
+  const res = await api.get(`/trending/${period}.json`, {
+    params: {
+      page,
+      limit,
+    },
+  });
+
   return res.data;
 };
