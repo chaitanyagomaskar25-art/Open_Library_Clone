@@ -59,7 +59,7 @@ const SearchResult = () => {
         {currentBooks.map((book) => (
           <Link
             key={book.key}
-            to={`/book${book.key}`}
+            to={`/book/${book.key.split("/").pop()}`}
             className="flex flex-col bg-white rounded-xl border border-stone-200 shadow-sm hover:shadow-md hover:border-amber-300 transition-all duration-200 overflow-hidden group"
           >
             {/* Book Thumbnail Container */}

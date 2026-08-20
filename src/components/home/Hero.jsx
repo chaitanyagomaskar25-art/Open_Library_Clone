@@ -45,6 +45,7 @@ const Hero = () => {
               <Link to="/subjects" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Subjects</Link>
               <Link to="/trending" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Trending</Link>
               <Link to="/explore" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Explore</Link>
+              <Link to="/collection" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Collection</Link>
               <Link to="#" className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-[#f4f1ea] hover:text-[#0288d1]">Random Book</Link>
             </div>
           </div>

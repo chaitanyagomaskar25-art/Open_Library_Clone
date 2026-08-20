@@ -48,7 +48,6 @@ const BookDetails = () => {
     queryFn: () => getAuthorDetails(authorId),
     enabled: !!authorId,
   });
-
   const coverId = bookDetails?.covers?.[0];
 
   const coverUrl = coverId
@@ -59,7 +58,7 @@ const BookDetails = () => {
     queryKey: ["editions", bookId],
     queryFn: () => getBookEditions(bookId),
   });
-
+  
   if (isPending) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -188,7 +187,7 @@ const BookDetails = () => {
                 </h1>
                 <p className="text-base text-gray-600 mt-1">
                   by{" "}
-                  <Link className="text-blue-600 font-semibold hover:underline">
+                  <Link to={`/authors/${authorId}`} className="text-blue-600 font-semibold hover:underline">
                     {authorDetails?.name || "Loading author..."}
                   </Link>
                 </p>
