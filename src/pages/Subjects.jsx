@@ -1,12 +1,9 @@
 import React from 'react'
-import SubjectSearch from '../components/subjects/SubjectSearch'
-import SubjectSection from '../components/subjects/SubjectSection'
-import SubjectHistory from '../components/subjects/SubjectHistory'
+import SubjectSection from '../components/subjects/SubjectSections'
 
 const Subjects = () => {
   return (
-    <div>
-     <SubjectSearch />
+    <div className=' mx-auto'>
      <SubjectSection />
     </div>
   )

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import {
   getbookDetails,
@@ -26,6 +26,7 @@ import {
 
 const BookDetails = () => {
   const { bookId } = useParams();
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
 
   const {
     data: bookDetails,
@@ -52,7 +53,7 @@ const BookDetails = () => {
 
   const coverUrl = coverId
     ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
-    : "/no-cover.png";
+    : null;
 
   const { data: editions } = useQuery({
     queryKey: ["editions", bookId],
@@ -85,54 +86,136 @@ const BookDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans pb-24">
-      {/* Top Breadcrumb Header Bar */}
-      <div className="bg-white border-b border-gray-200/80 sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between text-xs font-medium">
-          <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-          </button>
+      {/* Dynamic Keyframes for the Wooden Ambient Light Rail */}
+      <style>{`
+        @keyframes ambientWoodGlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-shelf-border {
+          background-size: 200% 200%;
+          animation: ambientWoodGlow 8s ease infinite;
+        }
+      `}</style>
 
-          <nav className="flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-1">
-            <NavLink className="px-3 py-1.5 bg-gray-900 text-white font-semibold rounded-lg whitespace-nowrap">
-              Overview
-            </NavLink>
-            <NavLink className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors whitespace-nowrap">
-              View {editions?.entries?.length || 0} Editions
-            </NavLink>
-            <NavLink className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors whitespace-nowrap">
-              Details
-            </NavLink>
-            <NavLink className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors whitespace-nowrap">
-              Reviwe
-            </NavLink>
-            <NavLink className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors whitespace-nowrap">
-              Lists
-            </NavLink>
-            <NavLink className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors whitespace-nowrap">
-              Related Books
-            </NavLink>
-          </nav>
-
-          <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
 
       <main className="max-w-6xl mx-auto px-4 pt-8 space-y-8">
-        
+       <div className="mb-6">
+               <button
+                 onClick={() => window.history.back()}
+                 className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
+               >
+                 <ArrowLeft size={14} /> Back
+               </button>
+             </div>
+       
+
         {/* Main Hero Showcase */}
         <div className="bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-8 shadow-xs">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: Cover & Primary Action Group */}
-            <div className="md:col-span-4 lg:col-span-3 flex flex-col items-center md:items-start space-y-5">
-              <div className="w-48 h-72 rounded-xl overflow-hidden bg-gray-100 shadow-md border border-gray-200 flex-shrink-0">
-                <img
-                  src={coverUrl}
-                  alt={bookDetails?.title}
-                  className="w-full h-full object-cover"
+            {/* Left Column: 3D Book Showcase & Primary Action Group */}
+            <div className="md:col-span-4 lg:col-span-4 flex flex-col items-center space-y-5">
+              
+              {/* 3D Viewport Shelf Showcase */}
+              <div 
+                className="relative w-full h-80 sm:h-96 flex items-center justify-center p-4 rounded-2xl bg-liear-to-b from-stone-200/80 via-amber-50/30 to-stone-300/60 border border-amber-900/20 shadow-[inset_0_6px_16px_rgba(0,0,0,0.12)] overflow-hidden cursor-pointer"
+                onMouseEnter={() => setIsHeroHovered(true)}
+                onMouseLeave={() => setIsHeroHovered(false)}
+                style={{ perspective: "1200px" }}
+              >
+                {/* Ceiling Shadow */}
+                <div className="absolute top-0 inset-x-0 h-8 bg-liear-to-b from-black/15 via-black/5 to-transparent pointer-events-none z-0" />
+
+                {/* 3D Book Container */}
+                <div 
+                  className="relative h-60 sm:h-72 w-40 sm:w-48 transition-all duration-500 ease-out z-10"
+                  style={{
+                    transformStyle: "preserve-3d",
+                    transform: isHeroHovered 
+                      ? "rotateY(0deg) rotateX(0deg) translateY(-10px) scale(1.05)"
+                      : "rotateY(-24deg) rotateX(5deg) translateY(0px)"
+                  }}
+                >
+                  {/* Front Cover Board */}
+                  <div 
+                    className={`absolute -inset-x-px -inset-y-px z-20 rounded-r-[3px] overflow-hidden bg-slate-200 transition-all duration-500 ${
+                      isHeroHovered 
+                        ? 'shadow-[0_26px_40px_rgba(0,0,0,0.32)]' 
+                        : 'shadow-[-6px_12px_24px_rgba(0,0,0,0.42)]'
+                    }`}
+                    style={{ transform: "translateZ(7px)" }}
+                  >
+                    {coverUrl ? (
+                      <img
+                        src={coverUrl}
+                        alt={bookDetails?.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-slate-900 flex flex-col items-center justify-center p-4 text-slate-200 font-sans text-center">
+                        <BookOpen className="w-8 h-8 mb-2 text-amber-400" />
+                        <span className="line-clamp-3 font-semibold text-sm leading-tight">{bookDetails?.title}</span>
+                      </div>
+                    )}
+
+                    {/* Spine Indentation Crease */}
+                    <div className="absolute top-0 bottom-0 left-3 sm:left-4 w-0.5 bg-black/25 shadow-[1px_0_1px_rgba(255,255,255,0.3)] pointer-events-none" />
+
+                    {/* Surface Sheen Reflection */}
+                    <div 
+                      className={`absolute inset-0 bg-liear-to-tr from-black/20 via-white/20 to-transparent pointer-events-none transition-opacity duration-500 ${
+                        isHeroHovered ? 'opacity-10' : 'opacity-80'
+                      }`} 
+                    />
+                  </div>
+
+                  {/* Inner Paper Block */}
+                  <div 
+                    className="absolute inset-y-px left-0 right-0.5 bg-[#f7f4eb] rounded-r-xs z-10"
+                    style={{ transform: "translateZ(3.5px)" }}
+                  />
+
+                  {/* Right Edge Page Stack */}
+                  <div 
+                    className="absolute top-px bottom-px right-px w-4 sm:w-5 bg-[#faf8f3] origin-right z-0 border-l border-amber-950/20" 
+                    style={{ 
+                      transform: "rotateY(90deg) translateZ(-1px)",
+                      backgroundImage: 'repeating-linear-liear(90deg, #f5f1e6, #f5f1e6 2px, #dcd5c5 2px, #dcd5c5 3px)' 
+                    }}
+                  />
+
+                  {/* Top Edge Page Stack */}
+                  <div 
+                    className="absolute top-0 left-px right-px h-4 sm:h-5 bg-[#efebd9] origin-top z-0 border-b border-amber-950/20"
+                    style={{ 
+                      transform: "rotateX(-90deg)",
+                      backgroundImage: 'repeating-linear-liear(0deg, #f5f1e6, #f5f1e6 2px, #dcd5c5 2px, #dcd5c5 3px)' 
+                    }}
+                  />
+
+                  {/* Back Cover Board */}
+                  <div 
+                    className="absolute -inset-x-px -inset-y-px bg-slate-800 rounded-r-[3px] z-0 shadow-md" 
+                    style={{ transform: "translateZ(-7px)" }}
+                  />
+                </div>
+
+                {/* Floor Contact Shadow */}
+                <div 
+                  className={`absolute bottom-3 w-4/5 h-4 bg-amber-950/45 rounded-full blur-md transition-all duration-500 origin-center ${
+                    isHeroHovered 
+                      ? 'scale-110 bg-amber-950/20 blur-lg translate-y-2 skew-x-0' 
+                      : 'scale-100 -skew-x-12 translate-x-2'
+                  }`}
+                  style={{ transform: "rotateX(80deg)" }}
                 />
+
+                {/* Animated 3D Shelf Lip */}
+                <div className="absolute bottom-0 inset-x-0 h-3 rounded-b-2xl border-t border-white/20 shadow-[0_-2px_6px_rgba(0,0,0,0.15)] overflow-hidden pointer-events-none z-20">
+                  <div className="w-full h-full animate-shelf-border bg-liear-to-r from-amber-950 via-amber-800 to-amber-950 opacity-90" />
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -176,7 +259,7 @@ const BookDetails = () => {
             </div>
 
             {/* Right Column: Key Details & Description */}
-            <div className="md:col-span-8 lg:col-span-9 space-y-6">
+            <div className="md:col-span-8 lg:col-span-8 space-y-6">
               
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
@@ -279,7 +362,7 @@ const BookDetails = () => {
                       : "/no-cover.png"
                   }
                   alt={edition.title}
-                  className="w-14 h-20 object-cover rounded-lg bg-gray-100 flex-shrink-0"
+                  className="w-14 h-20 object-cover rounded-lg bg-gray-100 shrink"
                 />
 
                 <div className="space-y-1 text-xs text-gray-600 overflow-hidden">
