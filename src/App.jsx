@@ -7,13 +7,18 @@ import SubjectDetails from "./pages/SubjectDetails";
 import Trending from "./pages/TrendingBooks";
 import AuthorDetails from "./pages/AuthorDetails";
 import NotFound from "./pages/NotFound";
+import Layout from "./components/layout/Layout";
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
-  },
-  { 
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      { 
     path: "/search",
     element: <SearchResult />
    },
@@ -37,6 +42,9 @@ export const router = createBrowserRouter([
     element: <Trending />
    },
   
+  
+    ]
+  },
    
    {
     path: '*',

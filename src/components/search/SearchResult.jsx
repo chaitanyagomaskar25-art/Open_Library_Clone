@@ -1,147 +1,89 @@
-import { ChevronLeft, ChevronRight, BookOpen, User, Calendar } from "lucide-react";
 import React, { useState } from "react";
-import { useLocation, Link } from "react-router";
+import { useLocation } from "react-router";
+import { Sparkles } from "lucide-react";
+import SearchResultPagination from "./SearchResultPagination";
+import SearchResultEmpty from "./SearchResultEmpty";
+import Book3DCard from "./SearchBook3DCard";
+
+const ITEMS_PER_PAGE = 8;
 
 const SearchResult = () => {
   const { state } = useLocation();
   const books = state?.books || [];
+  const query = state?.query || "";
   
-  const ITEMS_PER_PAGE = 8;
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Math for pagination
   const totalPages = Math.ceil(books.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentBooks = books.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
+  const goToPage = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
+  const handlePrev = () => goToPage(currentPage - 1);
+  const handleNext = () => goToPage(currentPage + 1);
 
   if (!books.length) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 px-4 text-center min-h-[50vh]">
-        <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center text-stone-400 mb-4">
-          <BookOpen size={32} />
-        </div>
-        <h2 className="text-xl font-semibold text-stone-800">No Search Results Found</h2>
-        <p className="text-sm text-stone-500 mt-1 max-w-sm">
-          We couldn't find any books matching your query. Try searching with a different title or author.
-        </p>
-      </div>
-    );
+    return <SearchResultEmpty query={query} />;
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header Info */}
-      <div className="flex items-center justify-between pb-6 mb-6 border-b border-stone-200">
-        <div>
-          <h1 className="text-2xl font-bold text-stone-800">Search Results</h1>
-          <p className="text-sm text-stone-500 mt-1">
-            Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, books.length)} of {books.length} books
-          </p>
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 py-8 font-sans">
+      <style>{`
+        @keyframes ambientWoodGlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-shelf-border {
+          background-size: 200% 200%;
+          animation: ambientWoodGlow 8s ease infinite;
+        }
+      `}</style>
+
+      {/* Header Bar */}
+      <div className="flex flex-wrap items-center justify-between pb-4 mb-5 border-b border-blue-900/10 gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-2 h-6 bg-blue-600 rounded-full shadow-sm shadow-blue-500/30" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-blue-950 tracking-tight">
+            {query ? `Search Results for "${query}"` : "Search Results"}
+          </h1>
         </div>
-      </div>
-
-      {/* Book Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {currentBooks.map((book) => (
-          <Link
-            key={book.key}
-            to={`/book/${book.key.split("/").pop()}`}
-            className="flex flex-col bg-white rounded-xl border border-stone-200 shadow-sm hover:shadow-md hover:border-amber-300 transition-all duration-200 overflow-hidden group"
-          >
-            {/* Book Thumbnail Container */}
-            <div className="h-52 bg-stone-100 relative overflow-hidden flex items-center justify-center border-b border-stone-100">
-              {book.cover_i ? (
-                <img
-                  src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-                  alt={book.title}
-                  className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-stone-400 gap-1 p-4 text-center">
-                  <BookOpen size={28} />
-                  <span className="text-xs font-medium">No Cover Available</span>
-                </div>
-              )}
-            </div>
-
-            {/* Book Details */}
-            <div className="flex flex-col flex-1 p-4">
-              <h2 className="text-base font-semibold text-stone-800 line-clamp-2 group-hover:text-amber-700 transition-colors">
-                {book.title}
-              </h2>
-
-              <div className="mt-2 space-y-1 text-xs text-stone-600">
-                <p className="flex items-center gap-1.5 truncate">
-                  <User size={13} className="shrink-0 text-stone-400" />
-                  <span className="truncate">
-                    {book.author_name ? book.author_name.join(", ") : "Unknown Author"}
-                  </span>
-                </p>
-
-                {book.first_publish_year && (
-                  <p className="flex items-center gap-1.5 text-stone-500">
-                    <Calendar size={13} className="shrink-0 text-stone-400" />
-                    <span>Published {book.first_publish_year}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-          </Link>
-        ))}
+        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-blue-900/90 bg-linear-to-r from-blue-50/90 via-sky-50/80 to-blue-50/90 border border-blue-200/80 px-3.5 py-1.5 rounded-full shrink-0 shadow-xs backdrop-blur-xs">
+          <Sparkles size={14} className="text-blue-600" />
+          <span>Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, books.length)} of {books.length}</span>
+        </div>
       </div>
 
       {/* Pagination Bar */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-10 pt-6 border-t border-stone-200">
-          <button
-            disabled={currentPage === 1}
-            onClick={handlePrev}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-              currentPage === 1
-                ? "text-stone-300 bg-stone-100 cursor-not-allowed"
-                : "text-[#3b2010] bg-[#f5ebd9] border border-[#c4a685] hover:bg-[#ebd3b2] active:scale-95 shadow-sm cursor-pointer"
-            }`}
-            aria-label="Previous Page"
-          >
-            <ChevronLeft size={18} />
-            <span>Previous</span>
-          </button>
+      <SearchResultPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onGoToPage={goToPage}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
 
-          <span className="text-sm font-medium text-stone-600">
-            Page <span className="text-stone-900 font-semibold">{currentPage}</span> of{" "}
-            <span className="text-stone-900 font-semibold">{totalPages}</span>
-          </span>
+      {/* Bookcase Container */}
+      <div className="relative rounded-2xl bg-linear-to-b from-stone-200/80 via-amber-50/30 to-stone-300/60 p-3 sm:p-5 border border-amber-900/20 shadow-[inset_0_6px_16px_rgba(0,0,0,0.12)] overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-8 bg-linear-to-b from-black/15 via-black/5 to-transparent pointer-events-none z-0" />
 
-          <button
-            disabled={currentPage === totalPages}
-            onClick={handleNext}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-              currentPage === totalPages
-                ? "text-stone-300 bg-stone-100 cursor-not-allowed"
-                : "text-[#3b2010] bg-[#f5ebd9] border border-[#c4a685] hover:bg-[#ebd3b2] active:scale-95 shadow-sm cursor-pointer"
-            }`}
-            aria-label="Next Page"
-          >
-            <span>Next</span>
-            <ChevronRight size={18} />
-          </button>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6 py-2 relative z-10">
+          {currentBooks.map((book) => (
+            <Book3DCard key={book.key} book={book} />
+          ))}
         </div>
-      )}
+
+        {/* Wooden Shelf Edge */}
+        <div className="absolute bottom-0 inset-x-0 h-3 sm:h-3.5 rounded-b-2xl border-t border-white/20 shadow-[0_-2px_6px_rgba(0,0,0,0.15)] overflow-hidden pointer-events-none z-20">
+          <div className="w-full h-full animate-shelf-border bg-linear-to-r from-amber-950 via-amber-900 to-amber-950 opacity-90" />
+        </div>
+      </div>
     </div>
   );
 };
